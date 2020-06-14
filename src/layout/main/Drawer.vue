@@ -2,7 +2,7 @@
   <v-navigation-drawer v-model="drawer.isActive" app disable-resize-watcher>
     <v-list>
       <v-list-item-group>
-        <v-list-item @click="$vuetify.goTo(item.to)" v-for="item in items" :key="item.label">
+        <v-list-item v-if="!(item.label === 'Depoimentos' && !depositions.isVisible)" @click="$vuetify.goTo(item.to)" v-for="item in items" :key="item.label">
           <v-list-item-avatar>
             <v-icon>
               {{ item.icon }}
@@ -27,7 +27,8 @@ export default {
   computed: {
     ...mapGetters(
       {
-        items: 'mainNav/getNavItems'
+        items: 'mainNav/getNavItems',
+        depositions: 'getDepositions'
       }
     )
   }

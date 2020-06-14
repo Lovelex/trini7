@@ -6,9 +6,10 @@
     <Things />
     <About />
     <Banner />
-    <Depositions />
+    <Depositions v-if="depositions.isVisible"/>
     <Contact />
     <UpButton />
+    <MainSnackbar />
     <Footer />
   </div>
 </template>
@@ -23,7 +24,11 @@ import Banner from "@/components/main/Banner";
 import Depositions from "@/components/main/Depositions";
 import Contact from "@/components/main/Contact";
 import UpButton from '@/layout/main/UpButton'
+import MainSnackbar from '@/layout/main/MainSnackbar'
 import Footer from "@/layout/main/Footer";
+
+import { db } from '../../plugins/firebase';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -36,7 +41,25 @@ export default {
     Depositions,
     Contact,
     UpButton,
+    MainSnackbar,
     Footer
+  },
+  computed: {
+    ...mapGetters(
+      {
+        depositions: 'getDepositions'
+      }
+    )
+  },
+  methods: {
+    ...mapActions(
+      {
+        setDepositions: 'setDepositions'
+      }
+    )
+  },
+  created() {
+    this.setDepositions()
   }
 };
 </script>

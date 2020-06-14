@@ -3,17 +3,30 @@
     <Drawer :drawer="drawer" />
     <nav id="main-navbar">
       <v-app-bar color="white" app>
-        <v-app-bar-nav-icon v-if="$vuetify.breakpoint.smAndDown" @click="drawer.isActive = !drawer.isActive"/>
+        <v-app-bar-nav-icon
+          v-if="$vuetify.breakpoint.smAndDown"
+          @click="drawer.isActive = !drawer.isActive"
+        />
         <div
           :class="{'main-logo': $vuetify.breakpoint.smAndDown, 'ml-n6': $vuetify.breakpoint.smAndDown}"
           class="d-flex flex-column align-center align-md-start"
         >
-          <v-img class="logo" @click="$vuetify.goTo(0)" width="140" src="@/assets/svg/logo-trini-horizontal.svg" />
+          <v-img
+            class="logo"
+            @click="$vuetify.goTo(0)"
+            width="140"
+            src="@/assets/svg/logo-trini-horizontal.svg"
+          />
         </div>
         <v-spacer />
         <div v-if="!$vuetify.breakpoint.smAndDown">
           <v-tabs>
-            <v-tab @click="$vuetify.goTo(item.to)" v-for="item in items" :key="item.label">{{ item.label }}</v-tab>
+            <v-tab
+              v-if="!(item.label === 'Depoimentos' && !depositions.isVisible)"
+              @click="$vuetify.goTo(item.to)"
+              v-for="item in items"
+              :key="item.label"
+            >{{ item.label }}</v-tab>
           </v-tabs>
         </div>
       </v-app-bar>
@@ -33,7 +46,10 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters({ items: "mainNav/getNavItems" })
+    ...mapGetters({
+      items: "mainNav/getNavItems",
+      depositions: 'getDepositions'
+    })
   }
 };
 </script>

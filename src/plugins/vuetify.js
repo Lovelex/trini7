@@ -11,11 +11,13 @@ export default new Vuetify({
 		themes: {
 			light: {
         bprimary: '#E5711A',
-        bsecondary: '#5F4C8C'
+				bsecondary: '#5F4C8C',
+				firestacks: '#ff5722'
 			},
 			dark: {
         bprimary: '#E5711A',
-        bsecondary: '#5F4C8C'
+				bsecondary: '#5F4C8C',
+				firestacks: '#ff5722'
 			}
 		}
 	}
