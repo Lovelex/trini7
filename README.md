@@ -1,4 +1,4 @@
-# trini
+# Trini 7
 
 ## Project setup
 ```

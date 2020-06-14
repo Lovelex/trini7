@@ -4,13 +4,13 @@
       <div class="brand-padding">
         <h2 class="mb-12">DEPOIMENTOS DAQUELES QUE CONFIAM EM NÓS</h2>
         <p class="mb-12">A jornada é dura, mas não solitária. Veja alguns depoimentos daqueles que dividiram seus sonhos conosco, fazendo com que a caminhada fosse bem mais leve.</p>
-        <Carousel :perPage="$vuetify.breakpoint.xs ? 1 : 4">
+        <Carousel :perPage="perPage.quantity">
           <Slide :key="i" v-for="(image, i) in images">
-            <div class="mx-1 elevation-3">
+            <div class="mx-1 elevation-3 d-flex flex-column align-center">
               <v-img
                 
-                :width="$vuetify.breakpoint.xs ? 328 : 280"
-                :height="$vuetify.breakpoint.xs ? 200 : 280"
+                :width="perPage.size.w"
+                :height="perPage.size.h"
                 :src="image.imageUrl"
               ></v-img>
               <div class="deposition-text-wrapper">
@@ -33,6 +33,37 @@ export default {
   data: () => ({
     images: []
   }),
+  computed: {
+    perPage() {
+      if(this.$vuetify.breakpoint.xs) {
+        return {
+          size: {
+            h: 400,
+            w: 323
+          },
+          quantity: 1
+        }
+      }
+      if(this.$vuetify.breakpoint.smOnly) {
+        return {
+          size: {
+            h: 328,
+            w: 272
+          },
+          quantity: 2
+        }
+      }
+      if(this.$vuetify.breakpoint.mdAndUp) {
+        return {
+          size: {
+            h: 328,
+            w: 280
+          },
+          quantity: 4
+        }
+      }
+    }
+  },
   firestore: {
     images: db.collection('depositions')
   }

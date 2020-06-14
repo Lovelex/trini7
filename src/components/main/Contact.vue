@@ -58,6 +58,7 @@
 import { db } from "../../plugins/firebase";
 import { mapActions } from "vuex";
 import formMixin from "@/mixins/formMixin";
+import axios from "axios";
 
 export default {
   mixins: [formMixin],
@@ -68,22 +69,21 @@ export default {
       email: "",
       text: ""
     },
-    phoneResult: '',
+    phoneResult: ""
   }),
   methods: {
     ...mapActions({
       setSnackbar: "mainSnackbar/setSnackbar"
     }),
     tel() {
-      let phone = this.message.phone.split('')
-      const firstTwoNumbers = phone.splice(0, 2)
-      firstTwoNumbers.push(')')
-      firstTwoNumbers.unshift('(')
-      phone.unshift(firstTwoNumbers.join(''))
-      phone.join('')
-      phone = phone.join('')
-      this.phoneResult = phone
-      
+      let phone = this.message.phone.split("");
+      const firstTwoNumbers = phone.splice(0, 2);
+      firstTwoNumbers.push(")");
+      firstTwoNumbers.unshift("(");
+      phone.unshift(firstTwoNumbers.join(""));
+      phone.join("");
+      phone = phone.join("");
+      this.phoneResult = phone;
     },
     submit() {
       const form = this.$refs.contactForm;
@@ -95,6 +95,23 @@ export default {
             time: new Date().toLocaleString(),
             newMessage: true,
             ...this.message
+          })
+          .then(() => {
+            axios
+              .post(
+                "https://us-central1-trini7-a9193.cloudfunctions.net/webApi/api/v1/sendMail",
+                {
+                  subject: this.message.name,
+                  text: `Nome: ${this.message.name}, Telefone: ${this.message.phone}, Email: ${this.message.email}, Mensagem: ${this.message.text}`,
+                  html: `Nome: ${this.message.name}, <br>Telefone: ${this.message.phone}, <br>Email: ${this.message.email}, <br>Mensagem: ${this.message.text}`
+                },
+              )
+              .catch(e => {
+                this.setSnackbar({
+                  mode: "error",
+                  text: e.message
+                });
+              });
           })
           .then(() => {
             this.setSnackbar({
@@ -121,10 +138,10 @@ export default {
 <style>
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 input[type="number"] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 </style>
